@@ -26,7 +26,7 @@ public class DataActivaty extends AppCompatActivity {
 
     TextView textviewdata;
     FirebaseDatabase database;
-    DatabaseReference myRefBoard1,myRef;
+    DatabaseReference myRef;
 
     RecyclerView mRecycler;
     DataStatistic mAdapter;
@@ -44,8 +44,8 @@ public class DataActivaty extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecycler.setLayoutManager(layoutManager);
 
-//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecycler.getContext(), DividerItemDecoration.VERTICAL);
-//        mRecycler.addItemDecoration(dividerItemDecoration);
+//      DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecycler.getContext(), DividerItemDecoration.VERTICAL);
+//      mRecycler.addItemDecoration(dividerItemDecoration);
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("history/");
@@ -54,12 +54,9 @@ public class DataActivaty extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                     List<Data> dataStatisticList = new ArrayList<>();
 
-//                Log.e("Get Data", "TEST" + dataSnapshot);
-
                  for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                       Data dataNum = postSnapshot.getValue(Data.class);
                       dataStatisticList.add(dataNum);
-                     Log.e("Get Data", "TEST" + dataNum);
                    }
 
                     setAdapter(dataStatisticList);
