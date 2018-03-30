@@ -29,24 +29,28 @@ public class Graph extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference databaseReference;
     List<Data> dataStatisticList;
+    BarChart chart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
 
-        Log.d("TEST0", "TES12T");
-        BarChart chart = findViewById(R.id.bar_chart);
+        chart = findViewById(R.id.bar_chart);
         dataStatisticList = new ArrayList<>();
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("history");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("TEST0", "TEST");
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    Data dataGraph = new Data(10, "5");
+                    Data dataGraph = postSnapshot.getValue(Data.class);
                     dataStatisticList.add(dataGraph);
+
+                    Log.d("TEST : dataGraph","TEST : dataGraph" + dataGraph.getDate());
                 }
+
+                arGraph();
             }
 
             @Override
@@ -54,8 +58,12 @@ public class Graph extends AppCompatActivity {
 
             }
         });
+    }
 
+    private void arGraph() {
         final ArrayList<BarEntry> barGraph = new ArrayList<>();
+        Log.d("TEST : dataGraph","TEST : dataGraph" + dataStatisticList);
+
         int index = 0;
         for (Data dataStatisticList : dataStatisticList) {
             barGraph.add(new BarEntry(index, dataStatisticList.getNum()));
